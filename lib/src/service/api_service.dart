@@ -1,3 +1,4 @@
+import 'package:movies_app/src/models/genre.dart';
 import 'package:movies_app/src/models/movie.dart';
 import 'package:dio/dio.dart';
 
@@ -16,6 +17,31 @@ class ApiService {
     } catch (error, stackTrace) {
       throw Exception(
           'Exception occured: $error with stack trace: $stackTrace');
+    }
+  }
+
+  Future<List<Movie>> getMovieByGenre(int movieId) async {
+    try {
+      final url = '$baseUrl/discover/movie?with_genres=$movieId&$apiKey';
+      final response = await _dio.get(url);
+      var movies = response.data['results'] as List;
+      List<Movie> movieList = movies.map((m) => Movie.fromJson(m)).toList();
+      return movieList;
+    } catch (error, stacktrace) {
+      throw Exception(
+          'Exception accoured: $error with stacktrace: $stacktrace');
+    }
+  }
+
+  Future<List<Genre>> getGenreList() async {
+    try {
+      final response = await _dio.get('$baseUrl/genre/movie/list?$apiKey');
+      var genres = response.data['genres'] as List;
+      List<Genre> genreList = genres.map((g) => Genre.fromJson(g)).toList();
+      return genreList;
+    } catch (error, stacktrace) {
+      throw Exception(
+          'Exception accoured: $error with stacktrace: $stacktrace');
     }
   }
 }

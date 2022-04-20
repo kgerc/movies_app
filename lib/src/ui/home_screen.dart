@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:movies_app/src/blocs/moviebloc/movie_bloc.dart';
@@ -6,6 +7,7 @@ import 'package:movies_app/src/blocs/moviebloc/movie_bloc_state.dart';
 import 'package:movies_app/src/models/movie.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:movies_app/src/ui/category_screen.dart';
 
 class HomeScreen extends StatelessWidget {
   @override
@@ -52,12 +54,10 @@ class HomeScreen extends StatelessWidget {
             Widget>[
           BlocBuilder<MovieBloc, MovieState>(
             builder: (context, state) {
-              print(state);
               if (state is MovieLoading) {
-                return Center(child: CircularProgressIndicator());
+                return Center(child: CupertinoActivityIndicator());
               } else if (state is MovieLoaded) {
                 List<Movie> movies = state.movieList;
-                print(movies.length);
                 return Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
@@ -66,6 +66,7 @@ class HomeScreen extends StatelessWidget {
                       itemBuilder: (BuildContext context, int index, _) {
                         Movie movie = movies[index];
                         return Stack(
+                          alignment: Alignment.bottomLeft,
                           children: <Widget>[
                             ClipRRect(
                               child: CachedNetworkImage(
@@ -73,8 +74,9 @@ class HomeScreen extends StatelessWidget {
                                     'https://image.tmdb.org/t/p/original/${movie.backdropPath}',
                                 height: MediaQuery.of(context).size.height / 3,
                                 width: MediaQuery.of(context).size.width,
+                                fit: BoxFit.cover,
                                 placeholder: (context, url) =>
-                                    CircularProgressIndicator(),
+                                    CupertinoActivityIndicator(),
                                 errorWidget: (context, url, error) => Container(
                                   decoration: BoxDecoration(
                                     image: DecorationImage(
@@ -84,8 +86,25 @@ class HomeScreen extends StatelessWidget {
                                   ),
                                 ),
                               ),
-                              borderRadius:
-                                  BorderRadius.all(Radius.circular(10)),
+                              borderRadius: BorderRadius.all(
+                                Radius.circular(10),
+                              ),
+                            ),
+                            Padding(
+                              padding: EdgeInsets.only(
+                                bottom: 15,
+                                left: 15,
+                              ),
+                              child: Text(
+                                movie.title.toUpperCase(),
+                                style: TextStyle(
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 18,
+                                  fontFamily: 'muli',
+                                ),
+                                overflow: TextOverflow.ellipsis,
+                              ),
                             ),
                           ],
                         );
@@ -93,11 +112,18 @@ class HomeScreen extends StatelessWidget {
                       options: CarouselOptions(
                         enableInfiniteScroll: true,
                         autoPlay: true,
-                        autoPlayInterval: Duration(seconds: 3),
-                        autoPlayAnimationDuration: Duration(microseconds: 500),
+                        autoPlayInterval: Duration(seconds: 5),
+                        autoPlayAnimationDuration: Duration(microseconds: 1000),
                         pauseAutoPlayOnTouch: true,
                         viewportFraction: 0.8,
                         enlargeCenterPage: true,
+                      ),
+                    ),
+                    Padding(
+                      padding: EdgeInsets.symmetric(horizontal: 12),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [SizedBox(height: 12), BuildWidgetCategory()],
                       ),
                     ),
                   ],
