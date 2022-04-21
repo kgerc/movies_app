@@ -1,6 +1,7 @@
 import 'package:movies_app/src/models/genre.dart';
 import 'package:movies_app/src/models/movie.dart';
 import 'package:dio/dio.dart';
+import 'package:movies_app/src/models/movie_detail.dart';
 
 class ApiService {
   final Dio _dio = Dio();
@@ -39,6 +40,19 @@ class ApiService {
       var genres = response.data['genres'] as List;
       List<Genre> genreList = genres.map((g) => Genre.fromJson(g)).toList();
       return genreList;
+    } catch (error, stacktrace) {
+      throw Exception(
+          'Exception accoured: $error with stacktrace: $stacktrace');
+    }
+  }
+
+  Future<MovieDetail> getMovieDetail(int movieId) async {
+    try {
+      print('movieid $movieId');
+      final response = await _dio.get('$baseUrl/movie/$movieId?$apiKey');
+      print('reponse data $response');
+      MovieDetail movieDetail = MovieDetail.fromJson(response.data);
+      return movieDetail;
     } catch (error, stacktrace) {
       throw Exception(
           'Exception accoured: $error with stacktrace: $stacktrace');

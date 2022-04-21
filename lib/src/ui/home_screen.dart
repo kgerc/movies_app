@@ -8,6 +8,7 @@ import 'package:movies_app/src/models/movie.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:movies_app/src/ui/category_screen.dart';
+import 'package:movies_app/src/ui/movie_detail_screen.dart';
 
 class HomeScreen extends StatelessWidget {
   @override
@@ -65,48 +66,60 @@ class HomeScreen extends StatelessWidget {
                       itemCount: movies.length,
                       itemBuilder: (BuildContext context, int index, _) {
                         Movie movie = movies[index];
-                        return Stack(
-                          alignment: Alignment.bottomLeft,
-                          children: <Widget>[
-                            ClipRRect(
-                              child: CachedNetworkImage(
-                                imageUrl:
-                                    'https://image.tmdb.org/t/p/original/${movie.backdropPath}',
-                                height: MediaQuery.of(context).size.height / 3,
-                                width: MediaQuery.of(context).size.width,
-                                fit: BoxFit.cover,
-                                placeholder: (context, url) =>
-                                    CupertinoActivityIndicator(),
-                                errorWidget: (context, url, error) => Container(
-                                  decoration: BoxDecoration(
-                                    image: DecorationImage(
-                                      image: AssetImage(
-                                          'assets/image/img_not_found.jpg'),
+                        return GestureDetector(
+                          onTap: () {
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) =>
+                                      MovieDetailScreen(movie: movie),
+                                ));
+                          },
+                          child: Stack(
+                            alignment: Alignment.bottomLeft,
+                            children: <Widget>[
+                              ClipRRect(
+                                child: CachedNetworkImage(
+                                  imageUrl:
+                                      'https://image.tmdb.org/t/p/original/${movie.backdropPath}',
+                                  height:
+                                      MediaQuery.of(context).size.height / 3,
+                                  width: MediaQuery.of(context).size.width,
+                                  fit: BoxFit.cover,
+                                  placeholder: (context, url) =>
+                                      CupertinoActivityIndicator(),
+                                  errorWidget: (context, url, error) =>
+                                      Container(
+                                    decoration: BoxDecoration(
+                                      image: DecorationImage(
+                                        image: AssetImage(
+                                            'assets/image/img_not_found.jpg'),
+                                      ),
                                     ),
                                   ),
                                 ),
-                              ),
-                              borderRadius: BorderRadius.all(
-                                Radius.circular(10),
-                              ),
-                            ),
-                            Padding(
-                              padding: EdgeInsets.only(
-                                bottom: 15,
-                                left: 15,
-                              ),
-                              child: Text(
-                                movie.title.toUpperCase(),
-                                style: TextStyle(
-                                  color: Colors.white,
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 18,
-                                  fontFamily: 'muli',
+                                borderRadius: BorderRadius.all(
+                                  Radius.circular(10),
                                 ),
-                                overflow: TextOverflow.ellipsis,
                               ),
-                            ),
-                          ],
+                              Padding(
+                                padding: EdgeInsets.only(
+                                  bottom: 15,
+                                  left: 15,
+                                ),
+                                child: Text(
+                                  movie.title.toUpperCase(),
+                                  style: TextStyle(
+                                    color: Colors.white,
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 18,
+                                    fontFamily: 'muli',
+                                  ),
+                                  overflow: TextOverflow.ellipsis,
+                                ),
+                              ),
+                            ],
+                          ),
                         );
                       },
                       options: CarouselOptions(
