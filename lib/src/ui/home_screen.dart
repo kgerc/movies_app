@@ -72,7 +72,7 @@ class HomeScreen extends StatelessWidget {
                                 context,
                                 MaterialPageRoute(
                                   builder: (context) =>
-                                      MovieDetailScreen(movie: movie),
+                                      MovieDetailScreen(null, movie),
                                 ));
                           },
                           child: Stack(

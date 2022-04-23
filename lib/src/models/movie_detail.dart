@@ -1,3 +1,5 @@
+import 'package:movies_app/src/models/movie_image.dart';
+
 class MovieDetail {
   final String? id;
   final String? title;
@@ -12,6 +14,7 @@ class MovieDetail {
   final String? voteCount;
 
   String? trailerId;
+  MovieImage? movieImage;
 
   MovieDetail(
       this.id,

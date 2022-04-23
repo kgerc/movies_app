@@ -2,6 +2,7 @@ import 'package:movies_app/src/models/genre.dart';
 import 'package:movies_app/src/models/movie.dart';
 import 'package:dio/dio.dart';
 import 'package:movies_app/src/models/movie_detail.dart';
+import 'package:movies_app/src/models/movie_image.dart';
 
 class ApiService {
   final Dio _dio = Dio();
@@ -53,6 +54,7 @@ class ApiService {
       print('reponse data $response');
       MovieDetail movieDetail = MovieDetail.fromJson(response.data);
       movieDetail.trailerId = await getYoutubeId(movieId);
+      movieDetail.movieImage = await getMovieImage(movieId);
       return movieDetail;
     } catch (error, stacktrace) {
       throw Exception(
@@ -65,6 +67,16 @@ class ApiService {
       final response = await _dio.get('$baseUrl/movie/$id/videos?$apiKey');
       var youtubeId = response.data['results'][0]['key'];
       return youtubeId;
+    } catch (error, stacktrace) {
+      throw Exception(
+          'Exception accoured: $error with stacktrace: $stacktrace');
+    }
+  }
+
+  Future<MovieImage> getMovieImage(int movieId) async {
+    try {
+      final response = await _dio.get('$baseUrl/movie/$movieId/images?$apiKey');
+      return MovieImage.fromJson(response.data);
     } catch (error, stacktrace) {
       throw Exception(
           'Exception accoured: $error with stacktrace: $stacktrace');
