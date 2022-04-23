@@ -52,7 +52,19 @@ class ApiService {
       final response = await _dio.get('$baseUrl/movie/$movieId?$apiKey');
       print('reponse data $response');
       MovieDetail movieDetail = MovieDetail.fromJson(response.data);
+      movieDetail.trailerId = await getYoutubeId(movieId);
       return movieDetail;
+    } catch (error, stacktrace) {
+      throw Exception(
+          'Exception accoured: $error with stacktrace: $stacktrace');
+    }
+  }
+
+  Future<String> getYoutubeId(int id) async {
+    try {
+      final response = await _dio.get('$baseUrl/movie/$id/videos?$apiKey');
+      var youtubeId = response.data['results'][0]['key'];
+      return youtubeId;
     } catch (error, stacktrace) {
       throw Exception(
           'Exception accoured: $error with stacktrace: $stacktrace');

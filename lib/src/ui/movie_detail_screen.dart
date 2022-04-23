@@ -7,6 +7,7 @@ import 'package:movies_app/src/blocs/moviedetailbloc/movie_detail_event.dart';
 import 'package:movies_app/src/blocs/moviedetailbloc/movie_detail_state.dart';
 import 'package:movies_app/src/models/movie.dart';
 import 'package:movies_app/src/models/movie_detail.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class MovieDetailScreen extends StatelessWidget {
   final Movie movie;
@@ -69,24 +70,34 @@ class MovieDetailScreen extends StatelessWidget {
                 ),
                 Container(
                   padding: EdgeInsets.only(top: 120),
-                  child: Center(
-                      child: Column(
-                    children: [
-                      Icon(
-                        Icons.play_circle_outline,
-                        color: Colors.yellow,
-                        size: 65,
-                      ),
-                      Text(
-                        movieDetail.title!.toUpperCase(),
-                        style: TextStyle(
-                            fontSize: 18,
-                            fontWeight: FontWeight.bold,
-                            color: Colors.white,
-                            fontFamily: 'muli'),
-                      )
-                    ],
-                  )),
+                  child: GestureDetector(
+                    onTap: () async {
+                      final youtubeUrl =
+                          'https://www.youtube.com/embed/${movieDetail.trailerId}';
+                      if (await canLaunch(youtubeUrl)) {
+                        await launch(youtubeUrl);
+                      }
+                    },
+                    child: Center(
+                        child: Column(
+                      children: [
+                        Icon(
+                          Icons.play_circle_outline,
+                          color: Colors.yellow,
+                          size: 65,
+                        ),
+                        Text(
+                          movieDetail.title!.toUpperCase(),
+                          style: TextStyle(
+                              fontSize: 18,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.white,
+                              fontFamily: 'muli'),
+                          overflow: TextOverflow.ellipsis,
+                        )
+                      ],
+                    )),
+                  ),
                 ),
               ],
             )

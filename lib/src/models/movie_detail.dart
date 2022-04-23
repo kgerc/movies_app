@@ -11,6 +11,8 @@ class MovieDetail {
   final String? voteAverage;
   final String? voteCount;
 
+  String? trailerId;
+
   MovieDetail(
       this.id,
       this.title,
