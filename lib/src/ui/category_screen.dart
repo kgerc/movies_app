@@ -199,7 +199,7 @@ class BuildWidgetCategoryState extends State<BuildWidgetCategory> {
                         Container(
                           width: 160,
                           child: Text(
-                            movie.title.toUpperCase(),
+                            movie.title!.toUpperCase(),
                             style: TextStyle(
                               fontSize: 12,
                               color: Colors.black45,
@@ -238,7 +238,7 @@ class BuildWidgetCategoryState extends State<BuildWidgetCategory> {
                                 size: 14,
                               ),
                               Text(
-                                movie.voteAverage,
+                                movie.voteAverage!,
                                 style: TextStyle(
                                   color: Colors.black45,
                                 ),

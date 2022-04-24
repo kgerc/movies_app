@@ -82,4 +82,21 @@ class ApiService {
           'Exception accoured: $error with stacktrace: $stacktrace');
     }
   }
+
+  Future<Movie> searchMovie(String searchString) async {
+    try {
+      final url = '$baseUrl/search/movie?query=$searchString&$apiKey';
+      print("movieSearch url $url");
+      final response = await _dio.get(url);
+      var movies = response.data['results'] as List;
+      if (movies.length > 0) {
+        return Movie.fromJson(movies[0]);
+      } else {
+        throw Exception('Movie not found');
+      }
+    } catch (error, stacktrace) {
+      throw Exception(
+          'Exception accoured: $error with stacktrace: $stacktrace');
+    }
+  }
 }

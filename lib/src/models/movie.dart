@@ -1,16 +1,16 @@
 class Movie {
-  final String backdropPath;
-  final int id;
-  final String originalLanguage;
-  final String originalTitle;
-  final String overview;
-  final double popularity;
-  final String posterPath;
-  final String releaseDate;
-  final String title;
-  final bool video;
-  final int voteCount;
-  final String voteAverage;
+  final String? backdropPath;
+  final int? id;
+  final String? originalLanguage;
+  final String? originalTitle;
+  final String? overview;
+  final double? popularity;
+  final String? posterPath;
+  final String? releaseDate;
+  final String? title;
+  final bool? video;
+  final int? voteCount;
+  final String? voteAverage;
 
   String? error;
 
@@ -45,6 +45,6 @@ class Movie {
         json['title'],
         json['video'],
         json['vote_count'],
-        json['vote_average'].toString());
+        json['vote_average']?.toString());
   }
 }
