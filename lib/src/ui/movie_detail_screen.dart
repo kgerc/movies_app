@@ -2,18 +2,20 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:movies_app/src/blocs/moviedetailbloc/movie_detail_bloc.dart';
 import 'package:movies_app/src/blocs/moviedetailbloc/movie_detail_event.dart';
 import 'package:movies_app/src/blocs/moviedetailbloc/movie_detail_state.dart';
 import 'package:movies_app/src/models/movie.dart';
 import 'package:movies_app/src/models/movie_detail.dart';
 import 'package:movies_app/src/models/screenshot.dart';
+import 'package:movies_app/src/service/api_service.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class MovieDetailScreen extends StatelessWidget {
   final Movie movie;
-
-  const MovieDetailScreen(Key? key, this.movie) : super(key: key);
+  late double movieRating = 0.0;
+  MovieDetailScreen(Key? key, this.movie) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -226,7 +228,7 @@ class MovieDetailScreen extends StatelessWidget {
                           ],
                         ),
                         SizedBox(
-                          height: 10,
+                          height: 8,
                         ),
                         Text(
                           'Screenshots'.toUpperCase(),
@@ -271,6 +273,81 @@ class MovieDetailScreen extends StatelessWidget {
                             },
                           ),
                         ),
+                        Text(
+                          'Rate the movie'.toUpperCase(),
+                          style: Theme.of(context).textTheme.caption?.copyWith(
+                                fontWeight: FontWeight.bold,
+                                fontFamily: 'muli',
+                              ),
+                        ),
+                        Row(
+                          children: [
+                            Expanded(
+                              child: Wrap(
+                                direction: Axis.horizontal,
+                                children: [
+                                  Container(
+                                    child: RatingBar.builder(
+                                      initialRating: 0,
+                                      minRating: 1,
+                                      direction: Axis.horizontal,
+                                      allowHalfRating: true,
+                                      itemCount: 10,
+                                      itemSize: 25,
+                                      itemPadding:
+                                          EdgeInsets.symmetric(horizontal: 4.0),
+                                      itemBuilder: (context, _) => Icon(
+                                        Icons.star,
+                                        color: Colors.amber,
+                                      ),
+                                      onRatingUpdate: (rating) {
+                                        movieRating = rating;
+                                        print('movieRating $movieRating');
+                                      },
+                                    ),
+                                  ),
+                                  Container(
+                                    height: 10,
+                                    child: Builder(
+                                      builder: (context) => IconButton(
+                                        iconSize: 30,
+                                        padding: EdgeInsets.only(bottom: 7),
+                                        icon: Icon(Icons.rate_review,
+                                            color: Colors.black45),
+                                        onPressed: () async {
+                                          final apiRepository = ApiService();
+                                          print('herer');
+                                          await apiRepository.rateMovie(
+                                              movie, movieRating);
+                                          ScaffoldMessenger.of(context)
+                                              .showSnackBar(
+                                            SnackBar(
+                                              backgroundColor:
+                                                  Colors.green[600],
+                                              content: Text('Movie rated!',
+                                                  style: Theme.of(context)
+                                                      .textTheme
+                                                      .caption
+                                                      ?.copyWith(
+                                                        fontWeight:
+                                                            FontWeight.bold,
+                                                        fontFamily: 'muli',
+                                                      ),
+                                                  textAlign: TextAlign.center),
+                                              duration: Duration(seconds: 2),
+                                            ),
+                                          );
+                                          Navigator.of(context)
+                                              .pushReplacementNamed('/');
+                                        },
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ],
+                        )
                       ],
                     ),
                   ),

@@ -8,6 +8,7 @@ import 'package:movies_app/src/models/movie.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:movies_app/src/service/api_service.dart';
+import 'package:movies_app/src/ui/app_drawer.dart';
 import 'package:movies_app/src/ui/category_screen.dart';
 import 'package:movies_app/src/ui/movie_detail_screen.dart';
 
@@ -26,7 +27,12 @@ class HomeScreen extends StatelessWidget {
         appBar: AppBar(
           backgroundColor: Colors.transparent,
           elevation: 0,
-          leading: Icon(Icons.menu, color: Colors.black45),
+          leading: Builder(
+            builder: (context) => IconButton(
+              icon: Icon(Icons.menu, color: Colors.black45),
+              onPressed: () => Scaffold.of(context).openDrawer(),
+            ),
+          ),
           title: Container(
             child: Center(
               child: TextField(
@@ -59,6 +65,7 @@ class HomeScreen extends StatelessWidget {
             )
           ],
         ),
+        drawer: AppDrawer(),
         body: _buildBody(context),
       ),
     );

@@ -99,4 +99,20 @@ class ApiService {
           'Exception accoured: $error with stacktrace: $stacktrace');
     }
   }
+
+  Future<void> rateMovie(Movie movie, double rating) async {
+    try {
+      final url =
+          'https://movies-web-5330c-default-rtdb.firebaseio.com/movies.json';
+      final response = await _dio.post(url, data: {
+        "id": movie.id,
+        "title": movie.title,
+        "backdropPath": movie.backdropPath,
+        "rating": rating
+      });
+    } catch (error, stacktrace) {
+      throw Exception(
+          'Exception accoured: $error with stacktrace: $stacktrace');
+    }
+  }
 }
