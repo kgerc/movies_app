@@ -14,8 +14,11 @@ import 'package:url_launcher/url_launcher.dart';
 
 class MovieDetailScreen extends StatelessWidget {
   final Movie movie;
+  final double? existingRating;
+  final String? databaseId;
   late double movieRating = 0.0;
-  MovieDetailScreen(Key? key, this.movie) : super(key: key);
+  MovieDetailScreen(Key? key, this.movie, this.existingRating, this.databaseId)
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -288,7 +291,7 @@ class MovieDetailScreen extends StatelessWidget {
                                 children: [
                                   Container(
                                     child: RatingBar.builder(
-                                      initialRating: 0,
+                                      initialRating: existingRating ?? 0,
                                       minRating: 1,
                                       direction: Axis.horizontal,
                                       allowHalfRating: true,
@@ -302,7 +305,6 @@ class MovieDetailScreen extends StatelessWidget {
                                       ),
                                       onRatingUpdate: (rating) {
                                         movieRating = rating;
-                                        print('movieRating $movieRating');
                                       },
                                     ),
                                   ),
@@ -316,9 +318,15 @@ class MovieDetailScreen extends StatelessWidget {
                                             color: Colors.black45),
                                         onPressed: () async {
                                           final apiRepository = ApiService();
-                                          print('herer');
-                                          await apiRepository.rateMovie(
-                                              movie, movieRating);
+                                          if (existingRating != null) {
+                                            await apiRepository
+                                                .updateMovieRating(
+                                                    databaseId!, movieRating);
+                                          } else {
+                                            await apiRepository.rateMovie(
+                                                movie, movieRating);
+                                          }
+
                                           ScaffoldMessenger.of(context)
                                               .showSnackBar(
                                             SnackBar(

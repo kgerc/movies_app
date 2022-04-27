@@ -56,8 +56,12 @@ class MyMoviesScreen extends StatelessWidget {
               itemCount: movies.length,
               itemBuilder: (_, i) => Column(
                 children: [
-                  MovieItemWidget(movies[i].id.toString(), movies[i].title,
-                      movies[i].backdropPath, movies[i].rating),
+                  MovieItemWidget(
+                      movies[i].id.toString(),
+                      movies[i].databaseId,
+                      movies[i].title,
+                      movies[i].backdropPath,
+                      movies[i].rating),
                   Divider(),
                 ],
               ),

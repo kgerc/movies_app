@@ -41,7 +41,8 @@ class HomeScreen extends StatelessWidget {
                   Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (context) => MovieDetailScreen(null, movie),
+                        builder: (context) =>
+                            MovieDetailScreen(null, movie, null, null),
                       ));
                 },
                 decoration: InputDecoration(
@@ -98,7 +99,7 @@ class HomeScreen extends StatelessWidget {
                                 context,
                                 MaterialPageRoute(
                                   builder: (context) =>
-                                      MovieDetailScreen(null, movie),
+                                      MovieDetailScreen(null, movie, null, null),
                                 ));
                           },
                           child: Stack(

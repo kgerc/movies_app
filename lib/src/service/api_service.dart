@@ -18,7 +18,6 @@ class ApiService {
   Future<List<Movie>> getNowPlayingMovie() async {
     try {
       final response = await _dio.get('$baseUrl/movie/now_playing?$apiKey');
-      print('Response $response');
       var movies = response.data['results'] as List;
       List<Movie> movieList = movies.map((m) => Movie.fromJson(m)).toList();
       return movieList;
@@ -55,9 +54,7 @@ class ApiService {
 
   Future<MovieDetail> getMovieDetail(int movieId) async {
     try {
-      print('movieid $movieId');
       final response = await _dio.get('$baseUrl/movie/$movieId?$apiKey');
-      print('reponse data $response');
       MovieDetail movieDetail = MovieDetail.fromJson(response.data);
       movieDetail.trailerId = await getYoutubeId(movieId);
       movieDetail.movieImage = await getMovieImage(movieId);
@@ -92,7 +89,6 @@ class ApiService {
   Future<Movie> searchMovie(String searchString) async {
     try {
       final url = '$baseUrl/search/movie?query=$searchString&$apiKey';
-      print("movieSearch url $url");
       final response = await _dio.get(url);
       var movies = response.data['results'] as List;
       if (movies.length > 0) {
@@ -132,6 +128,7 @@ class ApiService {
       if (extractedData != null) {
         extractedData.forEach((movieId, movieData) {
           movieList.add(MovieItem(
+            movieId,
             movieData['backdropPath'],
             movieData['id'],
             movieData['title'],
@@ -139,13 +136,18 @@ class ApiService {
           ));
         });
       }
-      print(movieList.last.id);
-      print(movieList.last.title);
-      print(movieList.last.backdropPath);
-      print(movieList.last.rating);
       return movieList;
     } catch (err) {
       rethrow;
     }
+  }
+
+  Future<void> updateMovieRating(String movieId, double rating) async {
+    final url =
+        'https://movies-web-5330c-default-rtdb.firebaseio.com/movies/$movieId.json';
+    await http.patch(Uri.parse(url),
+        body: json.encode({
+          'rating': rating,
+        }));
   }
 }
