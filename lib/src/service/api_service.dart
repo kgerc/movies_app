@@ -1,8 +1,14 @@
+import 'dart:convert';
+
 import 'package:movies_app/src/models/genre.dart';
 import 'package:movies_app/src/models/movie.dart';
 import 'package:dio/dio.dart';
 import 'package:movies_app/src/models/movie_detail.dart';
 import 'package:movies_app/src/models/movie_image.dart';
+import 'package:movies_app/src/models/movie_item.dart';
+
+import 'package:http/http.dart' as http;
+import 'package:movies_app/src/ui/movie_item_widget.dart';
 
 class ApiService {
   final Dio _dio = Dio();
@@ -113,6 +119,33 @@ class ApiService {
     } catch (error, stacktrace) {
       throw Exception(
           'Exception accoured: $error with stacktrace: $stacktrace');
+    }
+  }
+
+  Future<List<MovieItem>> getMoviesFromDb() async {
+    const url =
+        'https://movies-web-5330c-default-rtdb.firebaseio.com/movies.json';
+    try {
+      final response = await http.get(Uri.parse(url));
+      final extractedData = json.decode(response.body) as Map<String, dynamic>?;
+      final List<MovieItem> movieList = [];
+      if (extractedData != null) {
+        extractedData.forEach((movieId, movieData) {
+          movieList.add(MovieItem(
+            movieData['backdropPath'],
+            movieData['id'],
+            movieData['title'],
+            movieData['rating'],
+          ));
+        });
+      }
+      print(movieList.last.id);
+      print(movieList.last.title);
+      print(movieList.last.backdropPath);
+      print(movieList.last.rating);
+      return movieList;
+    } catch (err) {
+      rethrow;
     }
   }
 }
