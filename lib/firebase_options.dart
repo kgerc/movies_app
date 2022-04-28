@@ -41,22 +41,21 @@ class DefaultFirebaseOptions {
   }
 
   static const FirebaseOptions web = FirebaseOptions(
-    apiKey: 'AIzaSyCD39KIyLEgIUGqCvXN3j8PSbzScuz_8Jw',
-    appId: '1:776812728950:web:99c8b5b6811f06e18cc557',
-    messagingSenderId: '776812728950',
-    projectId: 'shop-app-9f7e6',
-    authDomain: 'shop-app-9f7e6.firebaseapp.com',
-    databaseURL: 'https://shop-app-9f7e6-default-rtdb.firebaseio.com',
-    storageBucket: 'shop-app-9f7e6.appspot.com',
-    measurementId: 'G-9TLGRBD4GD',
+    apiKey: 'AIzaSyD5bjmW93lECmZehsqtMCjI_Jr791xtwcM',
+    appId: '1:845992066760:android:1196fbda9da6372fbf2ffd',
+    messagingSenderId: '845992066760',
+    projectId: 'movies-web-5330c',
+    authDomain: 'movies-web-5330c.firebaseapp.com',
+    databaseURL: 'https://movies-web-5330c-default-rtdb.firebaseio.com/',
+    storageBucket: 'movies-web-5330c.appspot.com',
   );
 
   static const FirebaseOptions android = FirebaseOptions(
-    apiKey: 'AIzaSyCiZOD9y077TVGHtuMYx4NSaPc4vxQilDU',
-    appId: '1:776812728950:android:733ddc7c6181fb0f8cc557',
-    messagingSenderId: '776812728950',
-    projectId: 'shop-app-9f7e6',
-    databaseURL: 'https://shop-app-9f7e6-default-rtdb.firebaseio.com',
-    storageBucket: 'shop-app-9f7e6.appspot.com',
+    apiKey: 'AIzaSyD5bjmW93lECmZehsqtMCjI_Jr791xtwcM',
+    appId: '1:845992066760:android:1196fbda9da6372fbf2ffd',
+    messagingSenderId: '845992066760',
+    projectId: 'movies-web-5330c',
+    databaseURL: 'https://movies-web-5330c-default-rtdb.firebaseio.com/',
+    storageBucket: 'movies-web-5330c.appspot.com',
   );
 }

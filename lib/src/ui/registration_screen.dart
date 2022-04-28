@@ -36,14 +36,19 @@ class RegistrationScreen extends StatelessWidget {
               ElevatedButton(
                 onPressed: () async {
                   if (!isEmail(emailController.text.trim())) {
-                    // Fluttertoast.showToast(
-                    //     msg: "Enter correct email address",
-                    //     toastLength: Toast.LENGTH_SHORT,
-                    //     gravity: ToastGravity.BOTTOM,
-                    //     timeInSecForIosWeb: 1,
-                    //     backgroundColor: Colors.purple[50],
-                    //     textColor: Colors.black87,
-                    //     fontSize: 16.0);
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(
+                        backgroundColor: Colors.red[600],
+                        content: Text("Enter correct email address",
+                            style:
+                                Theme.of(context).textTheme.caption?.copyWith(
+                                      fontWeight: FontWeight.bold,
+                                      fontFamily: 'muli',
+                                    ),
+                            textAlign: TextAlign.center),
+                        duration: Duration(seconds: 2),
+                      ),
+                    );
                   } else {
                     if (passwordController.text ==
                         repeatPasswordController.text) {
@@ -69,14 +74,19 @@ class RegistrationScreen extends StatelessWidget {
                         ),
                       );
                     } else {
-                      // Fluttertoast.showToast(
-                      //     msg: "Passwords don't match!",
-                      //     toastLength: Toast.LENGTH_SHORT,
-                      //     gravity: ToastGravity.BOTTOM,
-                      //     timeInSecForIosWeb: 1,
-                      //     backgroundColor: Colors.purple[50],
-                      //     textColor: Colors.black87,
-                      //     fontSize: 16.0);
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(
+                          backgroundColor: Colors.red[600],
+                          content: Text("Passwords don't match",
+                              style:
+                                  Theme.of(context).textTheme.caption?.copyWith(
+                                        fontWeight: FontWeight.bold,
+                                        fontFamily: 'muli',
+                                      ),
+                              textAlign: TextAlign.center),
+                          duration: Duration(seconds: 2),
+                        ),
+                      );
                     }
                   }
                 },

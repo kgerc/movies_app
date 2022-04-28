@@ -30,9 +30,13 @@ class ApiService {
   Future<List<Movie>> getMovieByGenre(int movieId) async {
     try {
       final url = '$baseUrl/discover/movie?with_genres=$movieId&$apiKey';
+      print("url $url");
       final response = await _dio.get(url);
       var movies = response.data['results'] as List;
+      var test = movies.length;
+      print("movies count $test");
       List<Movie> movieList = movies.map((m) => Movie.fromJson(m)).toList();
+      print("movieList $movieList");
       return movieList;
     } catch (error, stacktrace) {
       throw Exception(

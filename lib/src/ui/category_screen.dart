@@ -75,7 +75,9 @@ class BuildWidgetCategoryState extends State<BuildWidgetCategory> {
                           onTap: () {
                             setState(() {
                               Genre genre = genres[index];
+                              print("genre $genre");
                               selectedGenre = genre.id;
+                              print("selc genre $selectedGenre");
                               context
                                   .read<MovieBloc>()
                                   .add(MovieEventStarted(selectedGenre, ''));
@@ -140,7 +142,9 @@ class BuildWidgetCategoryState extends State<BuildWidgetCategory> {
               return Center();
             } else if (state is MovieLoaded) {
               List<Movie> movieList = state.movieList;
-
+              Movie movieListitem = state.movieList[0];
+              print("movie list $movieList");
+              print("movie list item $movieListitem");
               return Container(
                 height: 300,
                 child: ListView.separated(

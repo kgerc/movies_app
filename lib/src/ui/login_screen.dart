@@ -35,15 +35,19 @@ class LoginScreen extends StatelessWidget {
                   if (FirebaseAuth.instance.currentUser != null) {
                     Navigator.of(context).pushReplacementNamed('/');
                   } else {
-                    // Fluttertoast.showToast(
-                    // 	msg: "Uncorrect email or password!",
-                    // 	toastLength: Toast.LENGTH_SHORT,
-                    // 	gravity: ToastGravity.BOTTOM,
-                    // 	timeInSecForIosWeb: 1,
-                    // 	backgroundColor: Colors.purple[50],
-                    // 	textColor: Colors.black87,
-                    // 	fontSize: 16.0
-                    // );
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(
+                        backgroundColor: Colors.red[600],
+                        content: Text("Incorrect email or password!",
+                            style:
+                                Theme.of(context).textTheme.caption?.copyWith(
+                                      fontWeight: FontWeight.bold,
+                                      fontFamily: 'muli',
+                                    ),
+                            textAlign: TextAlign.center),
+                        duration: Duration(seconds: 2),
+                      ),
+                    );
                   }
                 },
                 child: Text("Sign in"),
