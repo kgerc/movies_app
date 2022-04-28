@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:movies_app/src/ui/login_screen.dart';
 import 'package:movies_app/src/ui/my_movies_screen.dart';
+import 'package:movies_app/src/ui/registration_screen.dart';
 
 class AppDrawer extends StatelessWidget {
   @override
@@ -37,6 +39,28 @@ class DrawerContent extends StatelessWidget {
                   ));
             },
           ),
+          ListTile(
+            leading: Icon(Icons.login),
+            title: Text("Log in"),
+            onTap: () {
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => LoginScreen(),
+                  ));
+            },
+          ),
+          ListTile(
+            leading: Icon(Icons.person_add),
+            title: Text("Sign up"),
+            onTap: () {
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => RegistrationScreen(),
+                  ));
+            },
+          )
         ],
       ),
     );
