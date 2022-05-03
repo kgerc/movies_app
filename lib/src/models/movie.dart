@@ -30,10 +30,8 @@ class Movie {
 
   factory Movie.fromJson(dynamic json) {
     if (json == null) {
-      print("OI BRUV!");
       throw Exception("Data cannot be retrieved");
     }
-    print("json $json");
     return Movie(
         json['backdrop_path'],
         json['id'],

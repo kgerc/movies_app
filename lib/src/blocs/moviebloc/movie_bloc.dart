@@ -20,7 +20,6 @@ class MovieBloc extends Bloc<MovieEvent, MovieState> {
     yield MovieLoading();
     try {
       List<Movie> movieList = [];
-      print("movie id here $movieId");
       if (movieId == 0) {
         movieList = await service.getNowPlayingMovie();
       } else {

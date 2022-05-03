@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:movies_app/src/models/genre.dart';
 import 'package:movies_app/src/models/movie.dart';
 import 'package:dio/dio.dart';
@@ -30,13 +31,10 @@ class ApiService {
   Future<List<Movie>> getMovieByGenre(int movieId) async {
     try {
       final url = '$baseUrl/discover/movie?with_genres=$movieId&$apiKey';
-      print("url $url");
       final response = await _dio.get(url);
       var movies = response.data['results'] as List;
       var test = movies.length;
-      print("movies count $test");
       List<Movie> movieList = movies.map((m) => Movie.fromJson(m)).toList();
-      print("movieList $movieList");
       return movieList;
     } catch (error, stacktrace) {
       throw Exception(
@@ -98,7 +96,10 @@ class ApiService {
       if (movies.length > 0) {
         return Movie.fromJson(movies[0]);
       } else {
-        throw Exception('Movie not found');
+        var movieError = Movie(null, null, null, null, null, null, null, null,
+            null, null, null, null);
+        movieError.error = "Movie not found";
+        return movieError;
       }
     } catch (error, stacktrace) {
       throw Exception(
@@ -108,8 +109,9 @@ class ApiService {
 
   Future<void> rateMovie(Movie movie, double rating) async {
     try {
+      final userId = FirebaseAuth.instance.currentUser?.uid;
       final url =
-          'https://movies-web-5330c-default-rtdb.firebaseio.com/movies.json';
+          'https://movies-web-5330c-default-rtdb.firebaseio.com/movies/$userId.json';
       final response = await _dio.post(url, data: {
         "id": movie.id,
         "title": movie.title,
@@ -123,8 +125,9 @@ class ApiService {
   }
 
   Future<List<MovieItem>> getMoviesFromDb() async {
-    const url =
-        'https://movies-web-5330c-default-rtdb.firebaseio.com/movies.json';
+    final userId = FirebaseAuth.instance.currentUser?.uid;
+    final url =
+        'https://movies-web-5330c-default-rtdb.firebaseio.com/movies/$userId.json';
     try {
       final response = await http.get(Uri.parse(url));
       final extractedData = json.decode(response.body) as Map<String, dynamic>?;
@@ -147,8 +150,9 @@ class ApiService {
   }
 
   Future<void> updateMovieRating(String movieId, double rating) async {
+    final userId = FirebaseAuth.instance.currentUser?.uid;
     final url =
-        'https://movies-web-5330c-default-rtdb.firebaseio.com/movies/$movieId.json';
+        'https://movies-web-5330c-default-rtdb.firebaseio.com/movies/$userId/$movieId.json';
     await http.patch(Uri.parse(url),
         body: json.encode({
           'rating': rating,

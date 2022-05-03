@@ -20,7 +20,8 @@ class DrawerContent extends StatelessWidget {
       child: Column(
         children: [
           AppBar(
-            title: Text("Hello!"),
+            backgroundColor: Colors.yellow[800],
+            title: Text("Explore Movies Web!"),
             automaticallyImplyLeading: false,
           ),
           Divider(),
@@ -77,6 +78,19 @@ class DrawerContent extends StatelessWidget {
                   onTap: () {
                     context.read<AuthenticationService>().signOut();
                     Navigator.of(context).pushReplacementNamed('/');
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(
+                        backgroundColor: Colors.green[600],
+                        content: Text("You've been logged out",
+                            style:
+                                Theme.of(context).textTheme.caption?.copyWith(
+                                      fontWeight: FontWeight.bold,
+                                      fontFamily: 'muli',
+                                    ),
+                            textAlign: TextAlign.center),
+                        duration: Duration(seconds: 2),
+                      ),
+                    );
                   })
               : SizedBox.shrink(),
         ],

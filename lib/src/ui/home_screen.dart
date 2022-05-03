@@ -17,6 +17,7 @@ class HomeScreen extends StatelessWidget {
   final apiRepository = ApiService();
   @override
   Widget build(BuildContext context) {
+    TextEditingController searchBarController = new TextEditingController();
     return MultiBlocProvider(
       providers: [
         BlocProvider<MovieBloc>(
@@ -36,23 +37,44 @@ class HomeScreen extends StatelessWidget {
           title: Container(
             child: Center(
               child: TextField(
-                onSubmitted: (query) async {
-                  final movie = await apiRepository.searchMovie(query);
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) =>
-                            MovieDetailScreen(null, movie, null, null),
-                      ));
-                },
+                controller: searchBarController,
                 decoration: InputDecoration(
                     prefixIcon: IconButton(
                       icon: Icon(Icons.search),
-                      onPressed: () {},
+                      onPressed: () async {
+                        final movie = await apiRepository
+                            .searchMovie(searchBarController.text);
+                        if (movie.error != null) {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(
+                              backgroundColor: Colors.red[600],
+                              content: Text(movie.error!,
+                                  style: Theme.of(context)
+                                      .textTheme
+                                      .caption
+                                      ?.copyWith(
+                                        fontWeight: FontWeight.bold,
+                                        fontFamily: 'muli',
+                                      ),
+                                  textAlign: TextAlign.center),
+                              duration: Duration(seconds: 2),
+                            ),
+                          );
+                        } else {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) =>
+                                    MovieDetailScreen(null, movie, null, null),
+                              ));
+                        }
+                      },
                     ),
                     suffixIcon: IconButton(
                       icon: Icon(Icons.clear),
-                      onPressed: () {},
+                      onPressed: () {
+                        searchBarController.text = "";
+                      },
                     ),
                     hintText: 'Find a movie...',
                     border: InputBorder.none),
@@ -62,7 +84,10 @@ class HomeScreen extends StatelessWidget {
           actions: [
             Container(
               margin: EdgeInsets.only(right: 10),
-              child: CircleAvatar(),
+              child: CircleAvatar(
+                backgroundColor: Colors.yellow[800],
+                child: const Text('KG'),
+              ),
             )
           ],
         ),
@@ -98,8 +123,8 @@ class HomeScreen extends StatelessWidget {
                             Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                  builder: (context) =>
-                                      MovieDetailScreen(null, movie, null, null),
+                                  builder: (context) => MovieDetailScreen(
+                                      null, movie, null, null),
                                 ));
                           },
                           child: Stack(

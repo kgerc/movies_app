@@ -34,6 +34,19 @@ class LoginScreen extends StatelessWidget {
                       password: passwordController.text.trim());
                   if (FirebaseAuth.instance.currentUser != null) {
                     Navigator.of(context).pushReplacementNamed('/');
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(
+                        backgroundColor: Colors.green[600],
+                        content: Text("You've been logged in!",
+                            style:
+                                Theme.of(context).textTheme.caption?.copyWith(
+                                      fontWeight: FontWeight.bold,
+                                      fontFamily: 'muli',
+                                    ),
+                            textAlign: TextAlign.center),
+                        duration: Duration(seconds: 2),
+                      ),
+                    );
                   } else {
                     ScaffoldMessenger.of(context).showSnackBar(
                       SnackBar(

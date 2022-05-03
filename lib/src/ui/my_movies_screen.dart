@@ -32,9 +32,25 @@ class MyMoviesScreen extends StatelessWidget {
           ),
           actions: [
             Container(
+              margin: EdgeInsets.only(right: 75, top: 15),
+              child: Text(
+                "My rated movies".toUpperCase(),
+                style: TextStyle(
+                  color: Colors.black,
+                  fontFamily: 'muli',
+                  fontSize: 18,
+                  fontWeight: FontWeight.bold,
+                ),
+                overflow: TextOverflow.ellipsis,
+              ),
+            ),
+            Container(
               margin: EdgeInsets.only(right: 10),
-              child: CircleAvatar(),
-            )
+              child: CircleAvatar(
+                backgroundColor: Colors.yellow[800],
+                child: const Text('KG'),
+              ),
+            ),
           ],
         ),
         drawer: AppDrawer(),
