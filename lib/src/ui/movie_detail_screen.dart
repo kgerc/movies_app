@@ -1,4 +1,5 @@
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -136,10 +137,15 @@ class MovieDetailScreen extends StatelessWidget {
                           height: 5,
                         ),
                         Container(
-                          height: 35,
+                          height: FirebaseAuth.instance.currentUser?.uid != null
+                              ? 35
+                              : 70,
                           child: Text(
                             movieDetail.overview!,
-                            maxLines: 2,
+                            maxLines:
+                                FirebaseAuth.instance.currentUser?.uid != null
+                                    ? 2
+                                    : 4,
                             overflow: TextOverflow.ellipsis,
                             style: TextStyle(fontFamily: 'muli'),
                           ),
@@ -231,7 +237,9 @@ class MovieDetailScreen extends StatelessWidget {
                           ],
                         ),
                         SizedBox(
-                          height: 8,
+                          height: FirebaseAuth.instance.currentUser?.uid != null
+                              ? 8
+                              : 12,
                         ),
                         Text(
                           'Screenshots'.toUpperCase(),
@@ -276,86 +284,101 @@ class MovieDetailScreen extends StatelessWidget {
                             },
                           ),
                         ),
-                        Text(
-                          'Rate the movie'.toUpperCase(),
-                          style: Theme.of(context).textTheme.caption?.copyWith(
-                                fontWeight: FontWeight.bold,
-                                fontFamily: 'muli',
-                              ),
-                        ),
-                        Row(
-                          children: [
-                            Expanded(
-                              child: Wrap(
-                                direction: Axis.horizontal,
-                                children: [
-                                  Container(
-                                    child: RatingBar.builder(
-                                      initialRating: existingRating ?? 0,
-                                      minRating: 1,
-                                      direction: Axis.horizontal,
-                                      allowHalfRating: true,
-                                      itemCount: 10,
-                                      itemSize: 25,
-                                      itemPadding:
-                                          EdgeInsets.symmetric(horizontal: 4.0),
-                                      itemBuilder: (context, _) => Icon(
-                                        Icons.star,
-                                        color: Colors.amber,
-                                      ),
-                                      onRatingUpdate: (rating) {
-                                        movieRating = rating;
-                                      },
+                        FirebaseAuth.instance.currentUser?.uid != null
+                            ? Text(
+                                'Rate the movie'.toUpperCase(),
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .caption
+                                    ?.copyWith(
+                                      fontWeight: FontWeight.bold,
+                                      fontFamily: 'muli',
                                     ),
-                                  ),
-                                  Container(
-                                    height: 10,
-                                    child: Builder(
-                                      builder: (context) => IconButton(
-                                        iconSize: 30,
-                                        padding: EdgeInsets.only(bottom: 7),
-                                        icon: Icon(Icons.rate_review,
-                                            color: Colors.black45),
-                                        onPressed: () async {
-                                          final apiRepository = ApiService();
-                                          if (existingRating != null) {
-                                            await apiRepository
-                                                .updateMovieRating(
-                                                    databaseId!, movieRating);
-                                          } else {
-                                            await apiRepository.rateMovie(
-                                                movie, movieRating);
-                                          }
-
-                                          ScaffoldMessenger.of(context)
-                                              .showSnackBar(
-                                            SnackBar(
-                                              backgroundColor:
-                                                  Colors.green[600],
-                                              content: Text('Movie rated!',
-                                                  style: Theme.of(context)
-                                                      .textTheme
-                                                      .caption
-                                                      ?.copyWith(
-                                                        fontWeight:
-                                                            FontWeight.bold,
-                                                        fontFamily: 'muli',
-                                                      ),
-                                                  textAlign: TextAlign.center),
-                                              duration: Duration(seconds: 2),
+                              )
+                            : SizedBox.shrink(),
+                        FirebaseAuth.instance.currentUser?.uid != null
+                            ? Row(
+                                children: [
+                                  Expanded(
+                                    child: Wrap(
+                                      direction: Axis.horizontal,
+                                      children: [
+                                        Container(
+                                          child: RatingBar.builder(
+                                            initialRating: existingRating ?? 0,
+                                            minRating: 1,
+                                            direction: Axis.horizontal,
+                                            allowHalfRating: true,
+                                            itemCount: 10,
+                                            itemSize: 25,
+                                            itemPadding: EdgeInsets.symmetric(
+                                                horizontal: 4.0),
+                                            itemBuilder: (context, _) => Icon(
+                                              Icons.star,
+                                              color: Colors.amber,
                                             ),
-                                          );
-                                          Navigator.of(context)
-                                              .pushReplacementNamed('/');
-                                        },
-                                      ),
+                                            onRatingUpdate: (rating) {
+                                              movieRating = rating;
+                                            },
+                                          ),
+                                        ),
+                                        Container(
+                                          height: 10,
+                                          child: Builder(
+                                            builder: (context) => IconButton(
+                                              iconSize: 30,
+                                              padding:
+                                                  EdgeInsets.only(bottom: 7),
+                                              icon: Icon(Icons.rate_review,
+                                                  color: Colors.black45),
+                                              onPressed: () async {
+                                                final apiRepository =
+                                                    ApiService();
+                                                if (existingRating != null) {
+                                                  await apiRepository
+                                                      .updateMovieRating(
+                                                          databaseId!,
+                                                          movieRating);
+                                                } else {
+                                                  await apiRepository.rateMovie(
+                                                      movie, movieRating);
+                                                }
+
+                                                ScaffoldMessenger.of(context)
+                                                    .showSnackBar(
+                                                  SnackBar(
+                                                    backgroundColor:
+                                                        Colors.green[600],
+                                                    content: Text(
+                                                        'Movie rated!',
+                                                        style: Theme.of(context)
+                                                            .textTheme
+                                                            .caption
+                                                            ?.copyWith(
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .bold,
+                                                              fontFamily:
+                                                                  'muli',
+                                                            ),
+                                                        textAlign:
+                                                            TextAlign.center),
+                                                    duration:
+                                                        Duration(seconds: 2),
+                                                  ),
+                                                );
+                                                Navigator.of(context)
+                                                    .pushReplacementNamed('/');
+                                              },
+                                            ),
+                                          ),
+                                        ),
+                                      ],
                                     ),
                                   ),
                                 ],
-                              ),
-                            ),
-                          ],
-                        )
+                              )
+                            : SizedBox.shrink(),
                       ],
                     ),
                   ),
