@@ -31,7 +31,7 @@ class BuildWidgetCategoryState extends State<BuildWidgetCategory> {
   }
 
   @override
-  Widget build(BuildContext conte) {
+  Widget build(BuildContext context) {
     return MultiBlocProvider(
       providers: [
         BlocProvider<GenreBloc>(
@@ -181,16 +181,16 @@ class BuildWidgetCategoryState extends State<BuildWidgetCategory> {
                                 child: CupertinoActivityIndicator(),
                               ),
                             ),
-                            errorWidget: (context, url, error) => Container(
-                              width: 160,
-                              height: 180,
-                              decoration: BoxDecoration(
-                                image: DecorationImage(
-                                  image: AssetImage(
-                                      'assets/images/img_not_found.jpg'),
-                                ),
-                              ),
-                            ),
+                            // errorWidget: (context, url, error) => Container(
+                            //   width: 160,
+                            //   height: 180,
+                            //   decoration: BoxDecoration(
+                            //     image: DecorationImage(
+                            //       image: AssetImage(
+                            //           'assets/images/img_not_found.jpg'),
+                            //     ),
+                            //   ),
+                            // ),
                           ),
                         ),
                         SizedBox(
